@@ -6,6 +6,10 @@ Welcome to the Intelligent Physician Notetaker project—a cutting-edge AI syste
 
 ---
 
+![Project Block Diagram](block_diagram.md)
+
+---
+
 ## Project Objectives (As Assigned)
 
 - **Medical NLP Summarization:**
