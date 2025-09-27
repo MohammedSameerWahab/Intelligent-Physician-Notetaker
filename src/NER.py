@@ -5,34 +5,51 @@ import re
 
 def extract_medical_entities(text: str) -> Dict:
     """
-    Extract medical entities from a physician-patient conversation.
+    Extracts and cleans medical entities using a more robust hybrid approach:
+    1. A specialized NER model for clinical entities (Symptoms, Treatments).
+    2. A Question-Answering (QA) model for contextual information (Status, Prognosis).
     
     Args:
         text (str): The conversation transcript
     
     Returns:
-        Dict: Structured medical information
+        Dict: Structured and cleaned medical information
     """
-    # Load spaCy model for general NER
+    # --- 1. Initialization ---
     nlp = spacy.load("en_core_web_sm")
     
-    # Initialize medical NER pipeline
-    medical_ner = pipeline("ner", model="Clinical-AI-Apollo/Medical-NER")
+    # Initialize NER pipeline for specific entities
+    ner_pipeline = pipeline(
+        "ner", 
+        model="Clinical-AI-Apollo/Medical-NER",
+        aggregation_strategy="simple" 
+    )
     
-    # Initialize result structure
+    # NEW: Initialize QA pipeline for contextual, sentence-level information
+    qa_pipeline = pipeline(
+        "question-answering",
+        model="deepset/roberta-base-squad2"
+    )
+    
+    stop_words = {
+        'patient', 'doctor', 'physician', 'examination', 'physical', 'activity', 
+        'stethoscope', 'oxygen', 'fluids', 'up', 's', 'of', 'in', 'the', 'a', 'to'
+    }
+
     result = {
         "Patient_Name": None,
         "Symptoms": [],
         "Diagnosis": None,
         "Treatment": [],
-        "Current_Status": None,
-        "Prognosis": None
+        "Current_Status": "Not mentioned",
+        "Prognosis": "Not mentioned"
     }
+
+    # --- 2. Patient Name Extraction (Unchanged) ---
     name_match = re.search(r'(?:Mr|Ms|Mrs)\.\s*(\w+)', text, re.IGNORECASE)
     if name_match:
         result["Patient_Name"] = name_match.group(0)
     else:
-        # Fallback: Look for PERSON entities in the physician's lines.
         physician_lines = [line for line in text.split('\n') if line.strip().startswith('Physician:')]
         for line in physician_lines:
             line_doc = nlp(line)
@@ -42,16 +59,17 @@ def extract_medical_entities(text: str) -> Dict:
                     break
             if result["Patient_Name"]:
                 break
-        
-    # Use medical NER for medical entities
-    medical_entities = medical_ner(text)
+                
+    # --- 3. Medical Entity Extraction via NER (Unchanged) ---
+    ner_entities = ner_pipeline(text)
     
-    # Process medical entities
-    for entity in medical_entities:
-        entity_text = entity['word']
-        entity_type = entity['entity']
+    for entity in ner_entities:
+        entity_text = entity['word'].strip().lower()
+        entity_type = entity['entity_group']
         
-        # Map entity types to our structure
+        if len(entity_text) <= 1 or entity_text in stop_words:
+            continue
+
         if 'SYMPTOM' in entity_type or 'PROBLEM' in entity_type:
             if entity_text not in result["Symptoms"]:
                 result["Symptoms"].append(entity_text)
@@ -62,30 +80,40 @@ def extract_medical_entities(text: str) -> Dict:
             if not result["Diagnosis"]:
                 result["Diagnosis"] = entity_text
     
-    # Extract current status and prognosis using context analysis
-    lines = text.split('\n')
-    for i, line in enumerate(lines):
-        if 'current' in line.lower() or 'now' in line.lower():
-            result["Current_Status"] = line.split(':', 1)[1].strip() if ':' in line else line.strip()
-        if 'expect' in line.lower() or 'prognosis' in line.lower() or 'outlook' in line.lower():
-            result["Prognosis"] = line.split(':', 1)[1].strip() if ':' in line else line.strip()
+    # --- 4. ENHANCED Context-Based Extraction via QA ---
+    # This replaces the brittle keyword search with a robust QA model.
     
-    # Clean up empty values
-    result = {k: v for k, v in result.items() if v}
+    # Question for Current Status
+    status_question = "What is the patient's current status or how are they feeling now?"
+    status_answer = qa_pipeline(question=status_question, context=text)
+    if status_answer['score'] > 0.1: # Confidence threshold
+        result["Current_Status"] = status_answer['answer'].strip()
+
+    # Question for Prognosis
+    prognosis_question = "What is the physician's prognosis or expectation for recovery?"
+    prognosis_answer = qa_pipeline(question=prognosis_question, context=text)
+    if prognosis_answer['score'] > 0.1: # Confidence threshold
+        result["Prognosis"] = prognosis_answer['answer'].strip()
     
+    # --- 5. Final Cleanup (Unchanged) ---
+    if not result["Symptoms"]:
+        result["Symptoms"] = ["Not mentioned"]
+    if not result["Treatment"]:
+        result["Treatment"] = ["Not mentioned"]
+    if not result["Diagnosis"]:
+        result["Diagnosis"] = "Not mentioned"
+
     return result
 
-def process_medical_conversation(transcript_path: str) -> Dict:
+def process_medical_conversation(transcript_text: str) -> Dict:
     """
     Process a medical conversation and return structured information.
     
     Args:
-        transcript_path (str): Path to the transcript file
+        transcript_text (str): The raw text of the transcript
         
     Returns:
         Dict: Structured medical information
     """
-    with open(transcript_path, 'r', encoding='utf-8') as f:
-        text = f.read()
-    
-    return extract_medical_entities(text)
+    return extract_medical_entities(transcript_text)
+

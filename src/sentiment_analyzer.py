@@ -30,23 +30,20 @@ class SentimentAnalyzer:
             "asking a question"
         ]
 
-    def analyze_final_state(self, transcript_path: str) -> Dict:
+
+    def analyze_final_state(self, transcript_text: str) -> Dict:
         """
         Analyzes the final sentiment and intent of the patient based on their
         concluding remarks in the conversation.
 
         Args:
-            transcript_path (str): The full path to the transcript file.
+            transcript_text (str): The raw text of the transcript.
 
         Returns:
             A dictionary with the overall final sentiment and intent.
         """
-        try:
-            with open(transcript_path, 'r', encoding='utf-8') as f:
-                full_transcript = f.read()
-        except FileNotFoundError:
-            print(f"Error: Transcript file not found at {transcript_path}")
-            return {"error": f"File not found at {transcript_path}"}
+        # The file-reading logic is removed from here.
+        full_transcript = transcript_text
 
         # 1. Isolate all patient utterances
         patient_utterances = []
@@ -70,8 +67,7 @@ class SentimentAnalyzer:
 
         final_analysis = {
             "sentiment": sentiment_result['labels'][0],
-            "intent": intent_result['labels'][0],
-            "context analyzed": final_context
+            "intent": intent_result['labels'][0]
         }
 
         return final_analysis

@@ -17,6 +17,7 @@ myvenv
 # Sensitive Information - Crucial for API keys
 .env
 *.env
+secrets.toml
 
 # IDE / Editor specific files
 .vscode/

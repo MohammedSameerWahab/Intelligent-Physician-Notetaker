@@ -4,6 +4,7 @@ import os
 import json
 import google.generativeai as genai
 from typing import Dict
+import streamlit as st
 
 def generate_soap_note(transcript: str) -> Dict:
     """
@@ -15,9 +16,9 @@ def generate_soap_note(transcript: str) -> Dict:
     Returns:
         A dictionary representing the structured SOAP note.
     """
-    api_key = os.getenv("GEMINI_API_KEY")
+    api_key = st.secrets.get("GEMINI_API_KEY")
     if not api_key:
-        return {"error": "GEMINI_API_KEY environment variable not set."}
+        return {"error": "GEMINI_API_KEY not found in Streamlit Secrets."}
 
     genai.configure(api_key=api_key)
 
