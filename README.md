@@ -4,11 +4,14 @@
 
 Welcome to the Intelligent Physician Notetaker project—a cutting-edge AI system designed for medical transcription, advanced NLP-based summarization, sentiment analysis, and clinical documentation. This project goes far beyond the original assignment, delivering a robust, production-ready solution for healthcare professionals.
 
----
+<a href="https://intelligent-physician-notetaker.streamlit.app/" target="_blank">
+    <img src="https://static.streamlit.io/badges/streamlit_badge_black_white.svg" alt="Streamlit App" style="height: 40px;">
+</a>
 
-![Project Block Diagram](block_diagram.md)
+**This project is deployed and live! Click the badge above to interact with the application.**
 
----
+![Additional Image](templates/image.png)
+
 
 ## Project Objectives (As Assigned)
 
@@ -57,6 +60,8 @@ Welcome to the Intelligent Physician Notetaker project—a cutting-edge AI syste
 - Benchmarked multiple NER and sentiment models to select the most effective solutions for clinical data.
 - Designed the system for scalability, security, and real-world deployment in healthcare settings.
 - Documented all design decisions, trade-offs, and future roadmap in the codebase and README.
+
+![Block Diagram PNG](templates/blockDiagram.png)
 
 ---
 
