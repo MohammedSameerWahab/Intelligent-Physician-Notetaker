@@ -28,35 +28,25 @@ def extract_medical_entities(text: str) -> Dict:
         "Current_Status": None,
         "Prognosis": None
     }
+    
+    # --- Corrected Name Extraction Block ---
     name_match = re.search(r'(?:Mr|Ms|Mrs)\.\s*(\w+)', text, re.IGNORECASE)
     if name_match:
         # Reconstruct the full title and name found in the text.
         result["Patient_Name"] = name_match.group(0)
     else:
-        # Strategy 2 (Fallback): Look for PERSON entities in the physician's lines,
-        # as the physician is the one who will address the patient by name.
+        # Fallback: Look for PERSON entities in the physician's lines.
         physician_lines = [line for line in text.split('\n') if line.strip().startswith('Physician:')]
         for line in physician_lines:
             line_doc = nlp(line)
             for ent in line_doc.ents:
                 if ent.label_ == "PERSON":
                     result["Patient_Name"] = ent.text
-                    # Break out of all loops once the first potential name is found.
                     break
             if result["Patient_Name"]:
                 break
     
-    # Process text with spaCy for general entities
-    doc = nlp(text)
-    
-    # Extract patient name (looking for PERSON entities in patient's responses)
-    patient_lines = [line for line in text.split('\n') if line.strip().startswith('Patient:')]
-    for line in patient_lines:
-        line_doc = nlp(line)
-        for ent in line_doc.ents:
-            if ent.label_ == "PERSON":
-                result["Patient_Name"] = ent.text
-                break
+    # (The second, redundant block that searched patient_lines has been removed)
     
     # Use medical NER for medical entities
     medical_entities = medical_ner(text)
