@@ -106,6 +106,21 @@ Welcome to the Intelligent Physician Notetaker project—a cutting-edge AI syste
 
 ---
 
+### 🤔 Project Insights & Technical Deep Dive
+
+Beyond the implementation, this project required significant strategic thinking regarding model selection, data handling, and system architecture. I have compiled detailed answers to the key design questions posed in the project description in a separate document.
+
+**➡️ [Click here to read the full Technical Q&A and Deep Dive](./TECHNICAL_Q&A.md)**
+
+This document elaborates on:
+-   Strategies for handling ambiguous or missing data.
+-   The rationale behind the hybrid model selection for summarization.
+-   The step-by-step process for fine-tuning models for medical sentiment.
+-   Advanced techniques for SOAP note generation and accuracy improvement.
+
+---
+Why Th
+
 ## Contact & Further Information
 
 For questions, collaboration, or further details, please contact:
