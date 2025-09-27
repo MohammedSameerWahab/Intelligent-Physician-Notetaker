@@ -28,11 +28,8 @@ def extract_medical_entities(text: str) -> Dict:
         "Current_Status": None,
         "Prognosis": None
     }
-    
-    # --- Corrected Name Extraction Block ---
     name_match = re.search(r'(?:Mr|Ms|Mrs)\.\s*(\w+)', text, re.IGNORECASE)
     if name_match:
-        # Reconstruct the full title and name found in the text.
         result["Patient_Name"] = name_match.group(0)
     else:
         # Fallback: Look for PERSON entities in the physician's lines.
@@ -45,9 +42,7 @@ def extract_medical_entities(text: str) -> Dict:
                     break
             if result["Patient_Name"]:
                 break
-    
-    # (The second, redundant block that searched patient_lines has been removed)
-    
+        
     # Use medical NER for medical entities
     medical_entities = medical_ner(text)
     
