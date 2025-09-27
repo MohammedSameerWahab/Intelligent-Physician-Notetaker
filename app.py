@@ -139,14 +139,16 @@ if st.session_state.transcript:
             with st.spinner("Generating local summary..."):
                 st.session_state.summary = process_medical_conversation(st.session_state.transcript)
 
-
     with b_col2:
+        if st.button("✨ Advanced Summary", use_container_width=True, type="primary"):
+            with st.spinner("Generating advanced summary with Gemini..."):
+                st.session_state.advanced_summary = get_gemini_summary(st.session_state.transcript)
+
+    with b_col3:
         if st.button("😊 Sentiment Analysis", use_container_width=True, type="primary"):
             with st.spinner("Analyzing patient sentiment..."):
                 analyzer = SentimentAnalyzer()
                 st.session_state.sentiment = analyzer.analyze_final_state(st.session_state.transcript)
-
-
 
     with b_col4:
         if st.button("📋 Generate S.O.A.P. Note", use_container_width=True, type="primary"):
