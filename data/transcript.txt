@@ -1,0 +1,53 @@
+Physician: Good afternoon, Mr. Patel. How have you been since your last visit?
+
+Patient: Good afternoon, doctor. I’ve been improving, though I still feel stiffness in my right knee sometimes.
+
+Physician: That’s understandable. You had surgery on that knee about three months ago, correct?
+
+Patient: Yes, that’s right. I tore my meniscus while playing football, and I had the arthroscopic surgery in June.
+
+Physician: Can you describe how the injury happened?
+
+Patient: I was running down the field, tried to turn quickly, and suddenly felt a sharp pain in my knee. I couldn’t put weight on it at all afterward.
+
+Physician: That must have been very painful. Did you notice any swelling immediately?
+
+Patient: Yes, within an hour my knee was swollen and I couldn’t bend it properly.
+
+Physician: After surgery, how was your recovery in the first few weeks?
+
+Patient: The first two weeks were tough. I was on crutches, had pain, and couldn’t sleep well. But after I started physiotherapy, things gradually got better.
+
+Physician: And how many physiotherapy sessions have you had so far?
+
+Patient: I’ve completed twelve sessions. They’ve really helped with strengthening and flexibility.
+
+Physician: That’s good progress. Do you still feel pain during normal activities, like walking or climbing stairs?
+
+Patient: Walking is fine now, but stairs can sometimes cause mild pain. It’s not severe, just uncomfortable.
+
+Physician: Have you been able to return to sports or any physical hobbies?
+
+Patient: Not yet. I’ve been cautious. I only do light jogging under the physiotherapist’s guidance.
+
+Physician: That’s wise. How about daily life—work, driving, routine activities?
+
+Patient: I’m back at work full-time, and driving is fine. It’s mostly just the stairs and squatting that are still difficult.
+
+Physician: Alright, let’s do a physical examination to check your knee’s stability and mobility.
+
+[Physical Examination Conducted]
+
+Physician: Your knee shows good healing. Range of motion is nearly full, stability is strong, and there’s only mild stiffness left. No signs of instability or further damage.
+
+Patient: That’s reassuring.
+
+Physician: Yes, you’re on track. With continued physiotherapy and gradual strengthening, I’d expect you to fully recover in another 2–3 months. After that, you can safely return to sports.
+
+Patient: That’s great news. So I’ll be able to play football again?
+
+Physician: Absolutely, but make sure to build up slowly. No sudden twisting movements until your muscles are stronger. Listen to your body and pace yourself.
+
+Patient: Got it. Thank you so much, doctor.
+
+Physician: You’re very welcome, Mr. Patel. Keep up with your exercises, and we’ll see you again in six weeks to track your final progress.
