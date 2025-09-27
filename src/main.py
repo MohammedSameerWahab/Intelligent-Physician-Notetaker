@@ -4,6 +4,8 @@ import os
 import json
 from gemini_llm import get_gemini_summary
 from NER import process_medical_conversation
+from sentiment_analyzer import SentimentAnalyzer
+from soap_generator import generate_soap_note
 
 def main():
     """
@@ -22,7 +24,14 @@ def main():
     print("\n--- Tier 1: Structured Medical Summary ---")
     print(json.dumps(medical_summary, indent=2, ensure_ascii=False))
     print("-----------------------------------------\n")
-    
+
+# --- Sentiment & Intent Analysis ---
+    analyzer = SentimentAnalyzer()
+    sentiment_analysis = analyzer.analyze_final_state(transcript_path)
+    print("\n--- Patient Sentiment & Intent Analysis ---")
+    print(json.dumps(sentiment_analysis, indent=2, ensure_ascii=False))
+    print("-------------------------------------------\n")
+
 
     # --- Tier 2: Optional Gemini Summary ---
     user_choice = input("Would you like an advanced AI summary from Gemini? (y/n): ")
@@ -37,6 +46,21 @@ def main():
         print("\n--- Tier 2: Advanced Gemini Summary ---")
         print(json.dumps(gemini_summary, indent=2, ensure_ascii=False))
         print("---------------------------------------\n")
+    else:
+        print("Exiting.")
+
+    user_choice = input("Would you like to generate a SOAP note with Gemini? (y/n): ")
+
+    if user_choice.lower() == 'y':
+        # Read the transcript content to pass to the generator
+        with open(transcript_path, 'r', encoding='utf-8') as f:
+            transcript_content = f.read()
+            
+        soap_note = generate_soap_note(transcript_content)
+        
+        print("\n--- Step 3: AI-Generated SOAP Note ---")
+        print(json.dumps(soap_note, indent=2, ensure_ascii=False))
+        print("--------------------------------------\n")
     else:
         print("Exiting.")
 
