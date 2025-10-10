@@ -1,7 +1,5 @@
 ### 1. How would you handle ambiguous or missing medical data in the transcript?
 
-Arre, that's a very practical question! In any real-world system, data will never be 100% perfect, no? So, handling this ambiguity is the main thing.
-
 Actually, in our project, we have designed a **two-tiered, "human-in-the-loop" architecture** specifically for this challenge.
 
 * **First Level - The Local Models:** For the initial summary, we are using a specialized NER (Named Entity Recognition) model. Now, this model is very good, but sometimes it might miss a diagnosis or get confused by some complex sentence. The output it generates is a "best-effort" first draft. If some field is missing, it will simply say "Not mentioned."
